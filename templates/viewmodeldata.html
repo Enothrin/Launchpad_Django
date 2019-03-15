@@ -1,0 +1,13 @@
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+    {% csrf_token %}
+
+    {% for dt in data %}
+        {{ dt.name }}<a href="{% url 'delAudio' pk=dt.pk %}">{% bootstrap_icon 'remove' %}</a>
+    {%  endfor %}
+{% endblock %}

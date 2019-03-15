@@ -1,0 +1,132 @@
+		.main 
+		{
+			width: 300px;
+			height: 300px;
+			position: absolute;
+
+			background-image: url("logo_only.png");
+		}
+		.slide_down 
+		{
+			background-color: white;
+			height: 300px;
+			animation-name: anima_slide_down;
+			animation-duration: 0.3s;		
+			animation-delay: 3s;
+			bottom:0px;
+			width: 299px;
+		}
+		.slide_up 
+		{
+			background-color: white;
+			height: 100px;
+			animation-name: anima_slide_up;
+			animation-duration: 0.05s;
+			animation-delay: 3.3s;
+			left:100px; 
+			top:200px;
+			width: 177px;
+		}
+		.slide_left
+		{
+			animation-name: anima_slide_left;
+			animation-duration: 0.3s;
+			animation-delay: 3.3s;
+			transform: scale(1);
+			animation-iteration-count: 1;
+			animation-direction: alternate;
+			animation-fill-mode: forwards;
+		}
+		.slide_right
+		{
+			animation-name: anima_slide_right;
+			animation-duration: 0.3s;
+			animation-delay: 3.3s;
+			transform: scale(1);
+			animation-iteration-count: 1;
+			animation-direction: alternate;
+			animation-fill-mode: forwards;
+		}
+		.slide
+		{
+			
+			position: absolute;
+			animation-timing-function: ease-in;
+			animation-iteration-count: 1;
+			animation-direction: alternate;
+			animation-fill-mode: forwards;
+		}
+		.back
+		{
+			display: table;
+			position: relative;
+			background-color: rgb(34,34,34);
+			width:300px;
+			height: 300px;
+			margin-left: auto;
+			margin-right: auto; 
+
+		}
+		.blank
+		{
+			display: table;
+			position: absolute;
+
+			width: 100%;
+			height: 100%;
+
+		}
+		.align
+		{
+			display: table-cell;
+			vertical-align: middle;
+			transform: scale(0.4);
+		}
+		.logo
+		{	
+			position: absolute;
+            transform: scale(1);
+		}    
+		.text
+		{
+			position: absolute;
+			top:150px;
+			background-image: url("logo_text.png");
+			background-size:385px 75px;
+			width:385px;
+			height: 75px;
+			transform: scale(0.2);
+		}
+		
+		body
+		{
+			margin:0;
+		}
+		@keyframes anima_slide_down 
+		{
+			0%   { height: 300px;}
+			100% { height: 0px;}
+		}
+		@keyframes anima_slide_up 
+		{
+			0%   { height: 80px;}
+			100% { height: 0px;}
+		}
+		@keyframes anima_slide_left
+		{
+			0%   { left:0px;}
+			80% { transform: scale(0.7); left:-280px;}
+			100% { transform: scale(0.73); left:-280px;}
+		}
+		@keyframes anima_slide_right
+		{
+			0%   { left:0px;}
+			20%   {transform: scale(1);}
+			30%   {transform: scale(1.43);}
+			100% {left:80px;transform: scale(1.4);}
+		}
+		@keyframes start
+            {
+                0%   {  background-color:white; }
+                100% {  background-color: rgb(34,34,34); }
+            }

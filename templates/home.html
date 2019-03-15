@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="/static/accounts/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/accounts/js/howler.core.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/accounts/logo/favicon.png">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/quicksettings/latest/quicksettings.min.js"></script>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" type="text/css" href="/static/accounts/css/custom.navbar.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/quicksettings/latest/quicksettings.min.js"></script>
+
+    {% if user_active %}
+        <form id="form_button" style="color:gray; display:none;" action="{% url 'home' %}" method="post">
+            {% csrf_token %}
+            {{ form_button }}
+            <input type="submit" value="OK">
+        </form>
+
+
+        <script>
+            const url = "http://[AWS_STORAGE_BUCKET_NAME].s3.amazonaws.com/media/"
+            var button = {
+                farbe: "#55c3ff",
+                name: "hello",
+                audio: null,
+
+            };
+
+            window.onload = function () {
+
+                var x = $("body").width() / 5 * 4;
+                var settings = QuickSettings.create(x, 50);
+                settings.setGlobalChangeHandler(reloadform);
+                settings.bindColor("farbe", "#55c3ff", button);
+                settings.bindText("name", "hello", button);
+
+
+                settings.addDropDown("sound", [{% for dt in data %}{ label: "{{ dt.name }}",value: url+"{{ dt.file }}"
+                    },{%  endfor %}], function () {
+                    draw();
+                });
+
+                settings.addDropDown("Preset", [{label: "preset_reset"}, {label: "preset_player"}, {label: "preset_overlap"}, {label: "preset_replay"}], function () {
+                    draw();
+                });
+
+
+                settings.addButton("Play", function () {
+                    button_sounds.play()
+                })
+                settings.addButton("Submit", function () {
+                    document.getElementById("form_button").submit();
+                })
+                function draw() {
+                    button_sounds = new Howl({src: ["" + settings.getValue("sound").value]});
+                    settings.setValue("name", settings.getValue("sound").label);
+                }
+
+                draw();
+                function reloadform() {
+
+                    //document.getElementById("form_button").elements[1].value = document.getElementById("form_button").elements[1].options[3];
+                    document.getElementById("form_button").elements[1].selectedIndex = settings.getValue("sound").index + 1;
+                    document.getElementById("form_button").elements[2].value = button.name;
+                    document.getElementById("form_button").elements[3].value = button.farbe;
+                    document.getElementById("form_button").elements[4].selectedIndex = settings.getValue("Preset").index;
+                }
+
+                reloadform();
+
+            }
+        </script>
+    {% endif %}
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        #draggable {
+        }
+    </style>
+    <script src="/static/accounts/js/jquery-ui/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#draggable").draggable();
+        });
+    </script>
+
+
+    <style>
+
+        .center {
+            display: inline-block;
+            width: 48%;
+            height: 0px;
+            border: 1px solid;
+            position: relative;
+            float: left;
+            border: 0px;
+
+        }
+
+        .side {
+            display: inline-block;
+            height: 500px;
+            width: 26%;
+            border: 0px solid;
+            position: relative;
+            float: left;
+            display: flex;
+            justify-content: space-around;
+
+        }
+
+        .musicbutton {
+            width: 120px;
+            height: 120px;
+            min-width: 120px;
+            min-height: 120px;
+            /*background-color: rgb(63, 63, 58);*/
+            justify-content: space-around;
+            border: 0px solid;
+            position: relative;
+            page-break-inside: avoid;
+            break-inside: avoid-column;
+            display: table;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .but_array {
+            /*background-color: rgb(63, 63, 58);*/
+            column-count: 2;
+            column-gap: 0px;
+            z-index: 1;
+        }
+
+        body {
+            background-color: white;
+            color: white;
+            font-family: 'Raleway', sans-serif;
+            background-color: rgb(34, 34, 34);
+        }
+
+        .box {
+            background-color: rgb(112, 157, 111);
+            color: white;
+            font-family: 'Raleway', sans-serif;
+            width: 100px;
+            height: 100px;
+            margin: auto;
+            border-radius: 5px;
+            border-right: thick solid #3a6b37;
+            border-bottom: thick solid #3a6b37;
+        }
+
+        .box:hover {
+            background-color: rgb(90, 132, 92);
+        }
+
+        .box:active {
+            background-color: rgb(155, 197, 176);
+        }
+
+        @media (max-width: 767px) {
+            .side {
+                display: none;
+            }
+
+            .center {
+                width: 100%;
+            }
+
+        }
+
+        .launch {
+            width: 608px;
+            height: 608px;
+            border: 4px solid #404040;
+        }
+
+        .button {
+            float: left;
+            width: 150px;
+            height: 150px;
+            background-color: #b2b6b3;
+            border: 8px solid rgb(34, 34, 34);
+        }
+
+
+
+        .mid {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .dark-font {
+            color: gray;
+        }
+
+        .dark-font:hover {
+            color: gray;
+        }
+        a{color:whitesmoke;}
+
+    </style>
+
+
+</head>
+
+<body>
+
+<script>
+    $(document).ready(function () {
+        var wi = $(".center").width();
+        $(".center").css("height", wi);
+        $(window).resize(function () {
+            wi = $(".center").width();
+            $(".center").css("height", wi);
+        });
+    });
+
+    var play_mode = [preset_reset, preset_player, preset_overlap, preset_replay]
+
+    function preset_reset(x) {
+        if (played[x] == false || !sounds[x].playing()) {
+            currentSound[x] = sounds[x].play();
+            played[x] = true;
+        }
+        else {
+            sounds[x].stop();
+            played[x] = false;
+        }
+    }
+
+    //audio button = on/off + pause
+    function preset_player(x) {
+        if (played[x] == false || !sounds[x].playing()) {
+            currentSound[x] = sounds[x].play();
+            played[x] = true;
+        }
+        else {
+            sounds[x].pause();
+            played[x] = false;
+        }
+    }
+
+    //audio button = on + overlap
+    function preset_overlap(x) {
+        currentSound[x] = sounds[x].play();
+    }
+
+    function preset_replay(x) {
+        if (sounds[x].playing()) {
+            sounds[x].stop();
+        }
+        currentSound[x] = sounds[x].play();
+    }
+</script>
+
+<div>
+    <div class="side">
+        {% if user_active %}
+            <div>
+                <script>var count1 = 0;
+                var count2 = 0;</script>
+
+                {% for launch in pad %}
+                    <script>count2++;</script>
+                {% endfor %}
+
+
+                {% for launch in pad %}
+                    <script>
+                        count1++;
+                        document.write('<table id="{{ launch.name }}-c" class="table  pad-c" style="display:none">');
+                    </script>
+                    <tr>
+                        <th>{{ launch.name }}</th>
+                        <th><a href="{% url 'pad' pk=launch.pk %}">{% bootstrap_icon 'edit' %}</a></th>
+                        <th><a href="{% url 'delPad' pk=launch.pk %}">{% bootstrap_icon 'remove' %}</a></th>
+                    </tr>
+                    <div id="" class="" style="display:none">
+                        <div class="launch">
+
+                            {% for dt in launch.buttonlist.all %}
+
+                                <tr>
+                                    <td>
+                                        {{ dt }}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'edit_button' pk=dt.pk user=usercur %}">{% bootstrap_icon 'edit' %}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'delete_button' pk=dt.pk user=usercur %}">{% bootstrap_icon 'remove' %}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                {% endfor %}
+                </table>
+
+                {% csrf_token %}
+
+                <script>
+
+                    function show(padName) {
+                        var i;
+                        var x = document.getElementsByClassName("pad-c");
+                        for (i = 0; i < x.length; i++) {
+                            x[i].style.display = "none";
+                        }
+                        document.getElementById(padName).style.display = "block";
+                    }
+
+                </script>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="center">
+        {% if user_active == False %}
+            <iframe frameBorder="0" scrolling="no" seamless="seamless" width="100%" height="100%"
+                    src="/static/accounts/logo/logo.html"><p>Your browser does not support iframes.</p></iframe>
+        {% endif %}
+        {% csrf_token %}
+
+
+        <script>
+            var sounds = [];
+            var played = [];
+            var currentSound = [];
+            var count = 0;
+        </script>
+        <ul class="nav nav-tabs dark-font" id="pad-tab">
+            {% for launch in pad %}
+                <li role="presentation" data-toggle="tab" class="active" onclick="showPad('{{ launch.name }}')">
+                    <a class="dark-font" href="#">{{ launch.name }}</a></li>
+            {% endfor %}
+        </ul>
+        <div class="mid">
+            {% for launch in pad %}
+
+
+
+                <div id="{{ launch.name }}" class="pad-d" style="display:none">
+
+                    <div class="launch">
+
+
+                        {% for dt in launch.buttonlist.all %}
+
+                            <script>
+                                played[count] = false;
+                                sounds[count] = new Howl({
+                                    src: ['{{ dt.audio.file }}']
+                                });
+                                document.write('<style> #btn' + count + ':hover {background-color: {{ dt.color }};} </style>');
+                                document.write('<div id="btn' + count + '" class="button" >{{ dt.name }}');
+                                document.write('\x3Cscript>\n');
+
+                                document.write('var elem' + count + '  = document.getElementById("btn' + count + '");\n');
+                                document.write('if("ontouchstart" in document.documentElement){');
+
+                                document.write('elem' + count + '.addEventListener("touchstart", function(){ play_mode[{{ dt.preset }}](' + count + ')});}\n');
+
+                                document.write('else{');
+
+                                document.write('elem' + count + '.addEventListener("click", function(){ play_mode[{{ dt.preset }}](' + count + ')});}\n');
+                                document.write('\x3C/script>');
+
+                                count++;
+                            </script>
+
+                            </div>
+                        {% endfor %}
+                </div>
+
+
+                </div>
+
+
+
+            {% endfor %}
+
+
+        <script>
+
+            function showPad(padName) {
+                var i;
+                var x = document.getElementsByClassName("pad-d");
+                var y = document.getElementsByClassName("pad-c");
+                var z = padName + "-c";
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = "none";
+                    y[i].style.display = "none";
+                }
+                document.getElementById(padName).style.display = "block";
+                document.getElementById(z).style.display = "block";
+
+            }
+
+        </script>
+    </div>
+</div>
+
+<div class="side" style="">
+
+    <div style="float: top;">Disclamer: This Site is under Development!<br>Use Google Chrome for the best experience.
+    <table>
+     {% if user_active %}
+                    <tr>
+                        <th>Audiofiles</th>
+                        <th>Löschen</th>
+                    </tr>
+     {% endif %}
+                    <div id="" class="" style="display:none">
+                        <div class="launch">
+                            {% for dt in data %}
+
+                                <tr>
+                                    <td>
+                                        {{ dt }}
+                                    </td>
+
+                                    <td>
+                                        <a href="{% url 'delAudio' pk=dt.pk %}">{% bootstrap_icon 'remove' %}</a></td>
+                                </tr>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                </table>
+</div>
+</div>
+</div>
+
+<div class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+    <div class="container-fluid">
+
+        <div class="navbar-header"><a class="navbar-brand" href="{% url 'home' %} "><img
+                src="/static/accounts/img/logo_min.png" alt="audioQuery"></a></div>
+
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">Audio Upload</a>
+                <ul class="dropdown-menu">
+                    <li><a>
+                        <form action="{% url 'home' %}" enctype="multipart/form-data" method="post"
+                              class="form-horizontal">
+                            {% csrf_token %}
+                            {% bootstrap_form form_upload %}
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+                    </a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <!--<a href="#">Einstellungen</a>-->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="settingpos" role="button"
+                   aria-haspopup="true" aria-expanded="false">Create Pad</a>
+                <ul class="dropdown-menu">
+                    <li><a>
+                        <form action="{% url 'home' %}" enctype="multipart/form-data" method="post"
+                              class="form-horizontal">
+                            {% csrf_token %}
+                            {% bootstrap_form form_pad %}
+                            <!-- <canvas id="canvas"></canvas>-->
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <div class="navbar-header"><a class="navbar-brand" href="#">{% if user_active %}angemeldet als:
+                {{ username }}{% endif %}</a></div>
+            {% if user_active == False %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span> Registrieren</a>
+                    <ul class="dropdown-menu">
+                        <li><a>
+                            <form action="{% url 'home' %}" enctype="multipart/form-data" method="post"
+                                  class="form-horizontal">
+                                {% csrf_token %}
+                                {% bootstrap_form form_register %}
+                                <button type="submit" class="btn btn-primary">Registrieren</button>
+                            </form>
+                        </a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                    <ul class="dropdown-menu">
+                        <li><a>
+                            <form action="{% url 'home' %}" enctype="multipart/form-data" method="post"
+                                  class="form-horizontal">
+                                {% csrf_token %}
+                                {% bootstrap_form form_login %}
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </form>
+                        </a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+</div>
+
+
+</body>
+</html>

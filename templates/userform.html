@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<style>
+form {
+    border: 2px solid lightgrey;
+    margin-top: 10px;
+    margin-bottom: 100px;
+
+    padding: 4px;
+}
+    body {
+    border: 0px solid lightgrey;
+    margin-top: 10px;
+    margin-bottom: 100px;
+    margin-right:30%;
+    margin-left: 30%;
+    padding: 4px;
+}
+</style>
+<html lang="en">
+<h2>{{ page_title }}</h2>
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ page_title }}</title>
+</head>
+
+<body>
+
+
+<form action="{% url 'home' %}" enctype="multipart/form-data" method="post" class="form-horizontal">
+{% csrf_token %}
+{% bootstrap_form form layout='horizontal'%}
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+
+</form>
+
+
+</body>
+</html>

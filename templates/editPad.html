@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="/static/accounts/js/jquery-3.2.1.min.js"></script>
+        {% load bootstrap3 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+    <title>
+        {{ page_title }}
+    </title>
+</head>
+<body>
+
+{% block content %}
+    <h2>{{ page_title }}</h2>
+<script>var count1 = 0;
+var count2 = 0;</script>
+    <ul class="nav nav-tabs" id="pad-tab">
+        {% for launch in pad %}
+            <script>
+            count2++;
+            document.write(
+                '<li role="presentation" class="active" onclick="show(&#34table' + count2 +'&#34)" class="table table-striped">'
+            );
+</script>
+            <a href="#">{{ launch.name }}</a></li>
+        {%  endfor %}
+    </ul>
+
+    {% for launch in pad %}
+
+        <script>
+            count1++;
+            document.write('<table id="table' + count1 +'" class="table table-striped pad-c" style="display:none">');
+        </script>
+        <tr>
+            <th>Name</th>
+            <th>Buttons</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+        <div id="{{ launch.name }}" class="pad-c" style="display:none">
+            <div class="launch">
+                {% if True %}
+                    {% for dt in launch.buttonlist.all %}
+
+                        <tr>
+                            <td>
+                                {{ dt }}
+                            </td>
+                            <td><a href="{% url 'edit_button' pk=dt.pk user=usercur %}">{% bootstrap_icon 'edit' %}</a></td>
+                            <td><a href="{% url 'delete_button' pk=dt.pk user=usercur %}">{% bootstrap_icon 'remove' %}</a></td>
+                         </tr>
+                    {%  endfor %}
+            {%  endif %}
+        </div>
+        </div>
+    {%  endfor %}
+    </table>
+
+{% endblock %}
+<script>
+
+function show(padName) {
+    var i;
+    var x = document.getElementsByClassName("pad-c");
+    for (i = 0; i < x.length; i++) {x[i].style.display = "none";}
+    document.getElementById(padName).style.display = "block";
+}
+
+</script>
+
+
+</body>
+</html>
