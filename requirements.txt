@@ -1,5 +1,5 @@
 boto3==1.4.4
-Django==1.11.19
+Django==1.11.20
 django-storages==1.6.1
 python-decouple==3.0
 django-bootstrap3==11.0.0
